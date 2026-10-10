@@ -56,7 +56,7 @@ Breakpoint 1, kern_entry () at kern/init/entry.S:7
 
 从0x8020000a开始就是kern_init，后面几条在给memset准备参数，a0是edata，a2是end，a1是0，还开了16字节栈帧。
 
-另外bin/ucore.img的大小是12296字节也就是0x3008，正好等于0x80200000到end符号0x80203008的跨度，可以交叉验证bin文件确实是按链接脚本的布局线性展开加载到0x80200000的。
+
 
 # 2. 本章节逻辑线
 
