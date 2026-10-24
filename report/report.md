@@ -471,27 +471,9 @@ kern/mm/buddy_pmm.c，其导出的管理器是 buddy_pmm_manager。请为它设�
 
 <!-- 待补充：后续按报告要求填写。 -->
 
-## 10. 代码与提交说明
 
-主要新增或修改的文件：
 
-- `kern/mm/pmm.c`：实现 `page_init()`，切换默认管理器为 Best-Fit；
-- `kern/mm/best_fit_pmm.c`：Best-Fit 管理函数和注册结构；
-- `kern/mm/memlayout.h`：增加 `PG_buddy` 标志；
-- `kern/mm/buddy_pmm.c`、`buddy_pmm.h`：Buddy System；
-- `kern/mm/buddy_test.c`、`buddy_test.h`：Buddy 测试；
-- `kern/mm/slub.c`、`slub.h`：简化 SLUB；
-- `kern/mm/slub_test.c`、`slub_test.h`：SLUB 测试；
-- `kern/init/init.c`：在 `ucore_test` 模式下调用 Buddy/SLUB 测试。
-
-代码中保留了 `lab2` 注释，并已将 `YOUR CODE` 替换为学号 `2411966`。
-`basic_check()` 和 `best_fit_check()` 保持原样。Makefile 未修改，新增文件由
-`kern/mm` 的通配规则自动编译。
-
-线上指导书把 SLUB 标为选做 Challenge，而本地任务文档将其列为必修；本报告按
-本地任务文档完成了 SLUB 的实现和测试。
-
-## 11. 总结
+## 10. 总结
 
 本实验从虚拟地址空间和 DTB 物理内存探测出发，建立了 `Page` 描述符数组和
 空闲页管理结构，在此基础上实现了 Best-Fit，并进一步完成了 Buddy System 和
