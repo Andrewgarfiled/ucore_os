@@ -22,6 +22,20 @@ pmm_init()
   -> alloc_pages() / free_pages()
 ```
 
+## Prompt 文件索引
+
+本报告使用的 prompt 完整原文保存在 [`report/prompt/`](prompt/README.md)
+目录中，按练习分类：
+
+- `01_page_init.md`：物理内存探测与 Page 描述符初始化；
+- `02_best_fit.md`：Best-Fit 实现；
+- `03_buddy_impl.md`：Buddy System 实现；
+- `04_buddy_test.md`：Buddy System 测试设计；
+- `05_slub_impl.md`：SLUB 实现；
+- `06_slub_test.md`：SLUB 测试设计。
+
+`prompt/README.md` 提供了这些文件的索引和对应任务说明。
+
 ## 整体逻辑与实现顺序
 
 ### 整体逻辑
