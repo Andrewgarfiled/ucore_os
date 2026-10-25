@@ -437,40 +437,36 @@ kern/mm/buddy_pmm.c，其导出的管理器是 buddy_pmm_manager。请为它设�
    解决：先补全 `page_init()`，再在 `best_fit_pmm.c` 中定义
    `free_area`、`free_list`、`nr_free` 和完整的 Best-Fit 管理函数。
 
-2. **Best-Fit 的链表顺序与物理相邻合并的关系**
 
-   Best-Fit 的空闲链表按大小排序，而 `list_prev/list_next` 是大小相邻，
-   不一定物理相邻。当前实现能通过 `best_fit_check()`，但严格的合并逻辑应
-   遍历链表按地址查找前后邻居。这个问题被记录为 Best-Fit 的改进空间。
 
-3. **Buddy 测试需要确定性的伙伴关系**
+2. **Buddy 测试需要确定性的伙伴关系**
 
    如果随便从 Best-Fit 借一段页，起始地址不一定按 1024 页对齐，测试会不稳定。
    解决：借出 2048 页，选择一个 1024 页对齐的子区间，再在该子区间上初始化
    Buddy，确保两个 1 页块一定是伙伴。
 
-4. **Buddy 与 Best-Fit 的状态可能混淆**
+3. **Buddy 与 Best-Fit 的状态可能混淆**
 
    在测试中，Buddy 管理的页是从 Best-Fit 借来的。为避免 Buddy 合并时误把
    Best-Fit 的空闲块当作伙伴，增加了 `PG_buddy` 标志，只合并 Buddy 自己的
    空闲块。
 
-5. **SLUB 的 `kfree()` 需要区分 slab 对象和大对象**
+4. **SLUB 的 `kfree()` 需要区分 slab 对象和大对象**
 
    解决：在页首放 magic。`SLAB_MAGIC` 表示 slab 页，`BIG_MAGIC` 表示大对象页。
    `kfree()` 根据页首 magic 选择不同的回收路径。
 
-6. **`kmalloc(SIZE_MAX)` 可能导致页数计算溢出**
+5. **`kmalloc(SIZE_MAX)` 可能导致页数计算溢出**
 
    测试没有使用 `SIZE_MAX`，而是用 2GB 请求验证分配失败，避免
    `size + sizeof(struct big_block)` 发生整数回绕。
 
-7. **工具链路径问题**
+6. **工具链路径问题**
 
    环境中工具链路径在 `PATH` 里少了开头的 `/`，导致 `make` 找不到
    `riscv64-unknown-elf-gcc`。解决：构建时显式把完整工具链路径加入 `PATH`。
 
-8. **Makefile 不需要修改**
+7. **Makefile 不需要修改**
 
    新增的 `buddy_pmm.c`、`buddy_test.c`、`slub.c`、`slub_test.c` 都放在
    `kern/mm/` 下，而 Makefile 的 `KSRCDIR += kern/mm` 和 `listf_cc` 通配符

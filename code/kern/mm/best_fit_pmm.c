@@ -28,7 +28,7 @@ best_fit_insert(struct Page *base) {
             return;
         }
     }
-    list_add(&free_list, &(base->page_link));
+    list_add_before(&free_list, &(base->page_link));
 }
 
 static void
@@ -96,32 +96,35 @@ best_fit_free_pages(struct Page *base, size_t n) {
     base->property = n;
     SetPageProperty(base);
     nr_free += n;
-    best_fit_insert(base);
 
-    list_entry_t *le = list_prev(&(base->page_link));
-    if (le != &free_list) {
-        p = le2page(le, page_link);
-        if (p + p->property == base) {
-            p->property += base->property;
+    // 遍历找物理前邻（q + q->property == base）
+    list_entry_t *le = list_next(&free_list);
+    while (le != &free_list) {
+        struct Page *q = le2page(le, page_link);
+        if (q + q->property == base) {
+            q->property += base->property;
             ClearPageProperty(base);
-            list_del(&(base->page_link));
-            base = p;
+            base = q;
+            list_del(&(q->page_link));
+            break;
         }
+        le = list_next(le);
     }
 
-    le = list_next(&(base->page_link));
-    if (le != &free_list) {
-        p = le2page(le, page_link);
-        if (base + base->property == p) {
-            base->property += p->property;
-            ClearPageProperty(p);
-            list_del(&(p->page_link));
+    // 遍历找物理后邻（base + base->property == q）
+    le = list_next(&free_list);
+    while (le != &free_list) {
+        struct Page *q = le2page(le, page_link);
+        if (base + base->property == q) {
+            base->property += q->property;
+            ClearPageProperty(q);
+            list_del(&(q->page_link));
+            break;
         }
+        le = list_next(le);
     }
 
-    // Merging changes the block size, so reinsert in size order.
-    list_del(&(base->page_link));
-    best_fit_insert(base);
+    best_fit_insert(base);   // 合并后按大小插一次
 }
 
 static size_t
@@ -270,3 +273,4 @@ const struct pmm_manager best_fit_pmm_manager = {
     .nr_free_pages = best_fit_nr_free_pages,
     .check = best_fit_check,
 };
+
