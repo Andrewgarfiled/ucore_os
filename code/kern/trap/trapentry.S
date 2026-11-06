@@ -55,7 +55,7 @@
     .endm
 
     .macro RESTORE_ALL
-    #lab3 function1 YOUR CODE
+    #lab3 function1 2411966
 
     # restore sstatus, sepc, sbadaddr and scause from the trap frame.
     # Use s0 as a temporary register; its original value is restored below.
@@ -110,7 +110,7 @@
     .align(2)
 __alltraps:
     SAVE_ALL
-    #lab3 function1 YOUR CODE
+    #lab3 function1 2412168
     # pass the trap frame as the first argument of trap(struct trapframe *tf)
     mv a0, sp
     jal trap

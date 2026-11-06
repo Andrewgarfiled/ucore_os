@@ -82,7 +82,7 @@ void print_regs(struct pushregs *gpr) {
     cprintf("  t6       0x%08x\n", gpr->t6);
 }
 
-//lab3 function2 YOUR CODE
+//lab3 function2 2410959
 // Number of interrupt codes occupy the high bit of scause, strip it first.
 #define CAUSE_CODE_MASK (~((uintptr_t)1 << 63))
 
