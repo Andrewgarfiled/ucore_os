@@ -379,3 +379,38 @@ proc_init(void)
 
 
 //LAB4 function3 YOUR CODE
+// cpu_idle - idle loop; give up the CPU whenever rescheduling is requested
+void
+cpu_idle(void)
+{
+    while (1)
+    {
+        if (current->need_resched)
+        {
+            schedule();
+        }
+    }
+}
+
+// proc_run - switch the current process and address space
+void
+proc_run(struct proc_struct *proc)
+{
+    if (proc != current)
+    {
+        bool intr_flag;
+        struct proc_struct *prev = current;
+        struct proc_struct *next = proc;
+
+        local_intr_save(intr_flag);
+        {
+            current = proc;
+            write_csr(satp,
+                      0x8000000000000000 |
+                      (next->pgdir >> RISCV_PGSHIFT));
+            flush_tlb();
+            switch_to(&(prev->context), &(next->context));
+        }
+        local_intr_restore(intr_flag);
+    }
+}
