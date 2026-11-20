@@ -420,7 +420,7 @@ e38f0f9 lab4: implement scheduling and context switching
 
 | OS 原理知识点 | 实验对应实现 | 含义、关系和差异 |
 | --- | --- | --- |
-| 虚拟内存与多级页表 | `get_pte()`、`page_insert()`、`page_remove()` | MMU 通过页表把虚拟地址翻译为物理地址；实验完成了 Sv39 页表项建立、删除和 TLB 刷新，但仍以内核页表为主。 |
+| 多级页表的实现 | `get_pte()`、`page_insert()`、`page_remove()` | MMU 通过页表把虚拟地址翻译为物理地址；实验完成了 Sv39 页表项建立、删除和 TLB 刷新，但仍以内核页表为主。 |
 | 物理页引用计数 | `page_ref_inc()`、`page_ref_dec()`、`free_page()` | 多条映射可以引用同一物理页，引用计数归零后才能释放；实验重点是让映射操作与物理页生命周期保持一致。 |
 | PCB 与进程/线程抽象 | `struct proc_struct`、`current` | PCB 保存状态、PID、内核栈、页表和上下文；实验中 `proc_struct` 同时承担 PCB 和 TCB 的职责，当前全部是共享地址空间的内核线程。 |
 | 进程创建 | `kernel_thread()`、`do_fork()`、`copy_thread()` | `do_fork()` 类似 `fork/clone` 的资源复制和登记流程；区别是实验通过伪造 trapframe 创建内核线程，没有复制用户地址空间。 |
