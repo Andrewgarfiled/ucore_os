@@ -270,7 +270,7 @@ struct Page *get_page(pde_t *pgdir, uintptr_t la, pte_t **ptep_store)
     return NULL;
 }
 
-//LAB4 function1 YOUR CODE
+//LAB4 function1 2411966
 // page_remove_pte - remove a valid PTE and release one reference to its page
 static void
 page_remove_pte(pde_t *pgdir, uintptr_t la, pte_t *ptep)
