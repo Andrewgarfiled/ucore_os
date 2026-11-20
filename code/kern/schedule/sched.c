@@ -10,7 +10,7 @@ wakeup_proc(struct proc_struct *proc) {
     proc->state = PROC_RUNNABLE;
 }
 
-//LAB4 function3 YOUR CODE
+//LAB4 function3 2412168
 // schedule - choose the next runnable process with FIFO/round-robin order
 void
 schedule(void)
